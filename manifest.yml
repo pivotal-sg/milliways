@@ -1,6 +1,6 @@
 ---
 applications:
-- name: marvin
+- name: milliways
   disk: 256M
   memory: 512M
   host: milliways
