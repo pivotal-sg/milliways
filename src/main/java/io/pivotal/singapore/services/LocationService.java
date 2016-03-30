@@ -4,6 +4,11 @@ import lombok.Getter;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -11,23 +16,32 @@ import java.util.stream.Collectors;
 public class LocationService {
 
     @Getter
-    private Set<String> locations;
+    private Map<String, String> locations;
 
     LocationService() {
         locations = initLocations();
     }
 
-    private Set<String> initLocations() {
+    private Map<String, String> initLocations() {
         Set<String> availableZoneIds = ZoneId.getAvailableZoneIds();
 
         return availableZoneIds
                 .parallelStream()
                 .map(this::extractCity)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (k, v) -> k));
     }
 
-    private String extractCity(String zone) {
+    private Entry<String, String> extractCity(String zone) {
         String[] fragments = zone.split("/");
-        return fragments[fragments.length - 1].replace("_", " ").toLowerCase();
+        String location = fragments[fragments.length - 1].replace("_", " ").toLowerCase();
+
+        return new AbstractMap.SimpleImmutableEntry<>(location, zone);
+    }
+
+    public String getTimeForLocation(String location) {
+        String zone = locations.get(location);
+        ZoneId zoneId = ZoneId.of(zone);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+        return zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_TIME);
     }
 }
