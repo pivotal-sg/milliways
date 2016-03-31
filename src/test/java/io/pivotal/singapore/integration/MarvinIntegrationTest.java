@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import static com.jayway.restassured.RestAssured.when;
+import static org.hamcrest.core.Is.is;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = MilliwaysApplication.class)
@@ -27,11 +28,10 @@ public class MarvinIntegrationTest {
     }
 
     @Test
-    public void testRegisteringCommands() {
+    public void testThatACommandIsRegisteredWithMarvinOnStartup() {
         when()
                 .get(marvinUrl).
         then()
-                .statusCode(200);
-
+                .body("_embedded.commands.find { command -> command.name == \"time\" }.name", is("time"));
     }
 }

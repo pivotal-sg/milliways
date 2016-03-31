@@ -34,8 +34,15 @@ repositories {
 
 
 task startMarvin(type: JavaFork) {
-  main = "-jar"
-  args "lib/marvin-0.0.1-SNAPSHOT.jar"
+    main = "-jar"
+    args "lib/marvin-0.0.1-SNAPSHOT.jar"
+    systemProperties = [
+            'spring.profiles.active': 'test',
+            'server.port'           : '9090'
+    ]
+    doLast {
+        Thread.sleep(20000)
+    }
 }
 
 task stopMarvin << {
