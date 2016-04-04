@@ -15,6 +15,9 @@ public class RegisterCommand {
     @Value("${api.marvin.register}")
     private String marvinUrl;
 
+    @Value("${base.url}")
+    private String baseUrl;
+
     @PostConstruct
     void registerSubcommand() {
         HashMap<String, String> location = new HashMap<>();
@@ -25,7 +28,7 @@ public class RegisterCommand {
 
         HashMap<String, Object> subCommand = new HashMap<>();
         subCommand.put("name", "in");
-        subCommand.put("endpoint", "http://localhost:8081/");
+        subCommand.put("endpoint", baseUrl);
         subCommand.put("method", "GET");
         subCommand.put("arguments", arguments);
 
@@ -34,7 +37,7 @@ public class RegisterCommand {
 
         HashMap<String, Object> command = new HashMap<>();
         command.put("name", "time");
-        command.put("endpoint", "http://localhost:8081/");
+        command.put("endpoint", baseUrl);
         command.put("method", "GET");
         command.put("subCommands", subCommands);
 
