@@ -27,11 +27,6 @@ public class MarvinIntegrationTest {
     @Value("${api.marvin.root}")
     String marvinRoot;
 
-    @Before
-    public void setUp() {
-
-    }
-
     @Test
     public void testThatACommandIsRegisteredWithMarvinOnStartup() {
         when()

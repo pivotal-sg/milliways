@@ -28,7 +28,11 @@ public class LocationService {
         return availableZoneIds
                 .parallelStream()
                 .map(this::extractCity)
-                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (k, v) -> k));
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, this::mergeFunction));
+    }
+
+    private String mergeFunction(String oldValue, String newValue) {
+        return oldValue; //just keep the value associated with the first found key
     }
 
     private Entry<String, String> extractCity(String zone) {
