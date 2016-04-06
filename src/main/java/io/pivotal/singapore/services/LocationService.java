@@ -1,5 +1,6 @@
 package io.pivotal.singapore.services;
 
+import io.pivotal.singapore.services.exceptions.UnknownLocationException;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +43,13 @@ public class LocationService {
         return new AbstractMap.SimpleImmutableEntry<>(location, zone);
     }
 
-    public String getTimeForLocation(String location) {
+    public String getTimeForLocation(String location) throws UnknownLocationException {
         String zone = locations.get(location);
+
+        if (zone == null) {
+            throw new UnknownLocationException();
+        }
+
         ZoneId zoneId = ZoneId.of(zone);
         ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
         return zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_TIME);

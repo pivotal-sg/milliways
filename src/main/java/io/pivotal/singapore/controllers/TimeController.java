@@ -1,6 +1,7 @@
 package io.pivotal.singapore.controllers;
 
 import io.pivotal.singapore.services.LocationService;
+import io.pivotal.singapore.services.exceptions.UnknownLocationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.composed.web.rest.json.GetJson;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,9 +22,17 @@ public class TimeController {
         }
 
         HashMap<String, Object> response = new HashMap<>();
-        String timeForLocation = locationService.getTimeForLocation(location.toLowerCase());
 
-        response.put("message", String.format("The time in %s is %s", location, timeForLocation));
+        String responseMessage;
+
+        try {
+            String timeForLocation = locationService.getTimeForLocation(location.toLowerCase());
+            responseMessage = String.format("The time in %s is %s", location, timeForLocation);
+        } catch (UnknownLocationException ex) {
+            responseMessage = String.format("%s is not a recognized city", location);
+        }
+        response.put("message", responseMessage);
+
         response.put("message_type", "channel");
         return response;
     }
