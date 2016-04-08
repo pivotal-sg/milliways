@@ -1,7 +1,6 @@
 package io.pivotal.singapore.integration;
 
 import io.pivotal.singapore.MilliwaysApplication;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +39,7 @@ public class MarvinIntegrationTest {
     public void testThatOurCommandReturnsTheRightResponseToSlack() {
         given()
                 .param("text", "time in London")
-                .param("token", "FAKE_TEST_TOKEN").
+                .param("token", "FAKETESTTOKEN").
                 when()
                 .get(marvinRoot).
                 then()
