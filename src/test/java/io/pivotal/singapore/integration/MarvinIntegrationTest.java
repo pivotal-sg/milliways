@@ -21,15 +21,18 @@ import static org.hamcrest.core.StringStartsWith.startsWith;
 public class MarvinIntegrationTest {
 
     @Value("${api.marvin.register}")
-    String marvinUrl;
+    private String MARVIN_URL;
 
     @Value("${api.marvin.root}")
-    String marvinRoot;
+    private String MARVIN_ROOT;
+
+    @Value("${api.slack.token}")
+    private String API_SLACK_TOKEN;
 
     @Test
     public void testThatACommandIsRegisteredWithMarvinOnStartup() {
         when()
-                .get(marvinUrl).
+                .get(MARVIN_URL).
         then()
                 .body("_embedded.commands.find { command -> command.name == \"time\" }.name", is("time"));
     }
@@ -39,9 +42,9 @@ public class MarvinIntegrationTest {
     public void testThatOurCommandReturnsTheRightResponseToSlack() {
         given()
                 .param("text", "time in London")
-                .param("token", "FAKETESTTOKEN").
+                .param("token", API_SLACK_TOKEN).
                 when()
-                .get(marvinRoot).
+                .get(MARVIN_ROOT).
                 then()
                 .statusCode(200)
                 .body("response_type", is("in_channel"))
