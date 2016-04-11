@@ -11,5 +11,8 @@ inputs:
   - name: marvin-release
   - name: milliways-source
 
+outputs:
+  - name: milliways-release
+
 run:
   path: milliways-source/ci/tasks/integration.sh
