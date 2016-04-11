@@ -1,6 +1,9 @@
 
 # Created by https://www.gitignore.io/api/gradle,intellij,java,vim,osx
 
+### Ignore the lib folder where marvin lives
+lib/
+
 ### Gradle ###
 .gradle
 build/
