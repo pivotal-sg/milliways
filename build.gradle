@@ -52,6 +52,10 @@ task stopMarvin << {
 test.dependsOn startMarvin
 test.finalizedBy stopMarvin
 
+test {
+    outputs.upToDateWhen { false }
+}
+
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.composed:spring-composed:1.0.0.BUILD-SNAPSHOT')
