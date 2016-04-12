@@ -1,5 +1,8 @@
 package io.pivotal.singapore.config;
 
+import jdk.nashorn.internal.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -10,6 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.slf4j.LoggerFactory.*;
+
 @Configuration
 public class RegisterCommand {
     @Value("${api.marvin.register}")
@@ -18,8 +23,17 @@ public class RegisterCommand {
     @Value("${base.url}")
     private String baseUrl;
 
+    final static private Logger logger = getLogger(RegisterCommand.class);
+
     @PostConstruct
     void registerSubcommand() {
+        RestTemplate restTemplate1 = new RestTemplate();
+        logger.error(">>>>>>>>>>> GETTING COMMANDS REGISTERED WITH MARVIN <<<<<<<<<<<<<<<");
+        String response = restTemplate1.getForObject(marvinUrl, String.class);
+        logger.error(response);
+        logger.error(">>>>>>>>>>> GOT COMMANDS REGISTERED WITH MARVIN <<<<<<<<<<<<<<<");
+
+
         HashMap<String, String> location = new HashMap<>();
         location.put("location", "/^\\b(\\w+)/");
 
